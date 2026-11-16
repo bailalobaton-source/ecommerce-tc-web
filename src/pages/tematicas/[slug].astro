@@ -8,9 +8,66 @@ import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
   const tematicasValidas = [
-    { slug: 'navidad', nombre: 'Navidad' },
-    { slug: 'barbie', nombre: 'Barbie' },
-    { slug: 'mario-bros', nombre: 'Mario Bros' },
+    {
+      nombre: 'Barbie',
+      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Barbie&backgroundColor=fce4ec',
+      slug: 'barbie',
+    },
+    {
+      nombre: 'Bella Y Bestia',
+      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bella&backgroundColor=fff9c4',
+      slug: 'bella-y-bestia',
+    },
+    {
+      nombre: 'Hadas',
+      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hadas&backgroundColor=e0f7fa',
+      slug: 'hadas',
+    },
+    {
+      nombre: 'My Little Pony',
+      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pony&backgroundColor=f3e5f5',
+      slug: 'my-little-pony',
+    },
+    {
+      nombre: 'Cazadoras Kpop',
+      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kpop&backgroundColor=ede7f6',
+      slug: 'cazadoras-kpop',
+    },
+    {
+      nombre: 'Toy Story',
+      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Toy&backgroundColor=e8f5e9',
+      slug: 'toy-story',
+    },
+    {
+      nombre: 'Mario Bros',
+      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Mario&backgroundColor=e3f2fd',
+      slug: 'mario-bros',
+    },
+    {
+      nombre: 'Fresita',
+      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Fresita&backgroundColor=ffebee',
+      slug: 'fresita',
+    },
+    {
+      nombre: 'Hadas',
+      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hadas2&backgroundColor=e0f7fa',
+      slug: 'hadas-2',
+    },
+    {
+      nombre: 'My Little Pony',
+      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pony2&backgroundColor=f3e5f5',
+      slug: 'my-little-pony-2',
+    },
+    {
+      nombre: 'Cazadoras Kpop',
+      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kpop2&backgroundColor=ede7f6',
+      slug: 'cazadoras-kpop-2',
+    },
+    {
+      nombre: 'Toy Story',
+      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Toy2&backgroundColor=e8f5e9',
+      slug: 'toy-story-2',
+    },
   ];
   return tematicasValidas.map((tematica) => ({
     params: { slug: tematica.slug },
