@@ -1,0 +1,226 @@
+---
+// src/components/astro/ProductosDestacados.astro
+import CardProducto from './CardProducto.astro';
+
+const productos = [
+  {
+    id: 1,
+    nombre: 'Caja Santa Claus',
+    formatos: 'STUDIO / SVG / PDF',
+    precio: '12.90',
+    badge: 'Nuevo',
+    badgeColor: 'bg-[#ff4b8b]',
+    imagen:
+      'https://images.unsplash.com/photo-1608889175250-c3b0c1667d3a?q=80&w=500&auto=format&fit=crop',
+  },
+  {
+    id: 2,
+    nombre: 'Caja Reno',
+    formatos: 'STUDIO / SVG / PDF',
+    precio: '12.90',
+    badge: 'Bestseller',
+    badgeColor: 'bg-[#ff9f43]',
+    imagen:
+      'https://images.unsplash.com/photo-1512474932049-78ac69ede12c?q=80&w=500&auto=format&fit=crop',
+  },
+
+  {
+    id: 3,
+    nombre: 'Casa de Jengibre',
+    formatos: 'STUDIO / SVG / PDF',
+    precio: '14.90',
+    badge: 'Nuevo',
+    badgeColor: 'bg-[#ff4b8b]',
+    imagen:
+      'https://images.unsplash.com/photo-1512474932049-78ac69ede12c?q=80&w=500&auto=format&fit=crop',
+  },
+  {
+    id: 4,
+    nombre: 'Cámara Sorpresa',
+    formatos: 'STUDIO / SVG / PDF',
+    precio: '13.90',
+    badge: 'Bestseller',
+    badgeColor: 'bg-[#ff9f43]',
+    imagen:
+      'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?q=80&w=500&auto=format&fit=crop',
+  },
+  {
+    id: 5,
+    nombre: 'Mochila Navideña',
+    formatos: 'STUDIO / SVG / PDF',
+    precio: '15.90',
+    badge: 'Nuevo',
+    badgeColor: 'bg-[#ff4b8b]',
+    imagen:
+      'https://images.unsplash.com/photo-1608889825103-eb5ed706fc64?q=80&w=500&auto=format&fit=crop',
+  },
+  {
+    id: 6,
+    nombre: 'Kit Imprimible Reyes',
+    formatos: 'STUDIO / SVG / PDF',
+    precio: '10.90',
+    badge: 'Nuevo',
+    badgeColor: 'bg-[#ff4b8b]',
+    imagen:
+      'https://images.unsplash.com/photo-1543589077-47d81606c1bf?q=80&w=500&auto=format&fit=crop',
+  },
+];
+---
+
+<section class="w-full max-w-7xl mx-auto px-4 py-8 sm:py-10 relative group/section">
+  <!-- ENCABEZADO -->
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-[#ff4b8b] text-xl sm:text-2xl md:text-3xl font-extrabold font-['Quicksand'] tracking-tight">
+      Productos Destacados
+    </h2>
+
+    <!-- Botón Escritorio -->
+    <a
+      href="/productos/destacados"
+      class="hidden sm:inline-flex items-center gap-1.5 bg-pink-50/50 text-[#ff4b8b] border border-pink-200 rounded-full px-5 py-1.5 text-xs font-bold font-['Quicksand'] hover:bg-[#ff4b8b] hover:text-white hover:border-[#ff4b8b] hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+    >
+      Ver más productos &rarr;
+    </a>
+  </div>
+
+  <!-- CARRUSEL -->
+  <div class="relative">
+    <!-- Flecha Izquierda (Solo visible en PC al pasar el mouse por la sección) -->
+    <button
+      id="btn-prev-destacados"
+      class="absolute -left-4 sm:-left-5 top-1/2 -translate-y-1/2 bg-white text-gray-700 border border-pink-100 p-2.5 rounded-full shadow-[0_4px_12px_rgba(255,75,139,0.15)] hover:scale-110 hover:text-[#ff4b8b] transition-all duration-300 z-10 hidden sm:flex opacity-0 invisible group-hover/section:opacity-100 group-hover/section:visible focus:outline-none"
+      aria-label="Anterior"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="3"
+        stroke="currentColor"
+        class="w-4 h-4"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+      </svg>
+    </button>
+
+    <!-- Contenedor Deslizable de Tarjetas -->
+    <!-- -mx-2 y px-2 compensan el padding para que la sombra de las tarjetas no se corte en los bordes -->
+    <div
+      id="slider-destacados"
+      class="flex gap-4 overflow-x-auto snap-x snap-mandatory py-2 -mx-2 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none scroll-smooth"
+    >
+      {productos.map((prod) => (
+        <div class="shrink-0 snap-start w-40 sm:w-50 md:w-55">
+          <CardProducto
+            nombre={prod.nombre}
+            formatos={prod.formatos}
+            precio={prod.precio}
+            imagen={prod.imagen}
+            badge={prod.badge}
+            badgeColor={prod.badgeColor}
+          />
+        </div>
+      ))}
+    </div>
+
+    <!-- Flecha Derecha -->
+    <button
+      id="btn-next-destacados"
+      class="absolute -right-4 sm:-right-5 top-1/2 -translate-y-1/2 bg-white text-gray-700 border border-pink-100 p-2.5 rounded-full shadow-[0_4px_12px_rgba(255,75,139,0.15)] hover:scale-110 hover:text-[#ff4b8b] transition-all duration-300 z-10 hidden sm:flex opacity-0 invisible group-hover/section:opacity-100 group-hover/section:visible focus:outline-none"
+      aria-label="Siguiente"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="3"
+        stroke="currentColor"
+        class="w-4 h-4"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- INDICADORES (Puntitos) -->
+  <div class="flex justify-center gap-2 mt-4">
+    {productos.map((_, i) => (
+      <button
+        class={`destacado-dot w-2 h-2 rounded-full transition-all duration-300 ${i === 0 ? 'bg-[#ff4b8b] w-5' : 'bg-gray-200 hover:bg-gray-300'}`}
+        data-index={i}
+        aria-label={`Ver producto ${i + 1}`}
+      ></button>
+    ))}
+  </div>
+
+  <!-- Botón Móvil -->
+  <div class="mt-6 flex justify-center sm:hidden">
+    <a
+      href="/productos/destacados"
+      class="inline-flex items-center justify-center gap-2 bg-pink-50/80 text-[#ff4b8b] border border-pink-200 rounded-full px-6 py-2.5 text-xs font-bold font-['Quicksand'] hover:bg-[#ff4b8b] hover:text-white active:scale-95 transition-all duration-300 w-full shadow-sm"
+    >
+      Ver más productos &rarr;
+    </a>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const slider = document.getElementById('slider-destacados');
+    const btnPrev = document.getElementById('btn-prev-destacados');
+    const btnNext = document.getElementById('btn-next-destacados');
+    const dots = document.querySelectorAll('.destacado-dot');
+
+    if (!slider || !btnPrev || !btnNext) return;
+
+    // Calcular cuánto deslizar basado en el ancho de la primera tarjeta
+    const getScrollAmount = () => {
+      const card = slider.firstElementChild;
+      if (!card) return 200; // Valor por defecto
+      // Ancho + Gap
+      return card.clientWidth + 16; // 16px es el equivalente a gap-4
+    };
+
+    btnPrev.addEventListener('click', () => {
+      slider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+    });
+
+    btnNext.addEventListener('click', () => {
+      slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+    });
+
+    // Clic en los puntos
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        slider.scrollTo({
+          left: getScrollAmount() * index,
+          behavior: 'smooth',
+        });
+      });
+    });
+
+    // Actualizar puntos al deslizar (scroll manual)
+    slider.addEventListener(
+      'scroll',
+      () => {
+        const scrollRatio = slider.scrollLeft / (slider.scrollWidth - slider.clientWidth);
+        const totalDots = dots.length;
+
+        let activeIndex = Math.round(scrollRatio * (totalDots - 1));
+        if (activeIndex < 0) activeIndex = 0;
+        if (activeIndex >= totalDots) activeIndex = totalDots - 1;
+
+        dots.forEach((dot, index) => {
+          if (index === activeIndex) {
+            dot.classList.add('bg-[#ff4b8b]', 'w-5');
+            dot.classList.remove('bg-gray-200');
+          } else {
+            dot.classList.remove('bg-[#ff4b8b]', 'w-5');
+            dot.classList.add('bg-gray-200');
+          }
+        });
+      },
+      { passive: true }
+    );
+  });
+</script>

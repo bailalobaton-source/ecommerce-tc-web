@@ -1,0 +1,112 @@
+---
+// src/components/astro/ExploraTematicas.astro
+
+const tematicas = [
+  {
+    nombre: 'Navidad',
+    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Barbie&backgroundColor=fce4ec',
+    slug: 'navidad',
+  },
+  {
+    nombre: 'Safari',
+    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bella&backgroundColor=fff9c4',
+    slug: 'safari',
+  },
+  {
+    nombre: 'Princesas',
+    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hadas&backgroundColor=e0f7fa',
+    slug: 'princesas',
+  },
+  {
+    nombre: 'Espacio',
+    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pony&backgroundColor=f3e5f5',
+    slug: 'espacio',
+  },
+  {
+    nombre: 'Dinosaurios',
+    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kpop&backgroundColor=ede7f6',
+    slug: 'dinosaurios',
+  },
+  {
+    nombre: 'Sirenas',
+    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Toy&backgroundColor=e8f5e9',
+    slug: 'sirenas',
+  },
+  {
+    nombre: 'Unicornios',
+    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Mario&backgroundColor=e3f2fd',
+    slug: 'unicornios',
+  },
+  {
+    nombre: 'Más',
+    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Fresita&backgroundColor=ffebee',
+    slug: 'todas',
+  },
+];
+---
+
+<section class="w-full max-w-7xl mx-auto px-4 py-4 sm:py-8">
+  <!-- Encabezado de la sección -->
+  <div class="flex items-center justify-between mb-4 sm:mb-6">
+    <h2 class="text-[#ff4b8b] text-lg sm:text-xl md:text-2xl font-extrabold font-['Quicksand'] tracking-tight flex items-center gap-2">
+      <!-- Iconito decorativo para hacer el título más bonito -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        class="w-5 h-5 sm:w-6 sm:h-6 text-pink-400"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      Explora por Temáticas
+    </h2>
+
+    <!-- Botón Escritorio -->
+    <a
+      href="/tematicas"
+      class="hidden sm:inline-flex items-center gap-1.5 bg-pink-50/50 text-[#ff4b8b] border border-pink-200 rounded-full px-5 py-1.5 text-xs font-bold font-['Quicksand'] hover:bg-[#ff4b8b] hover:text-white hover:border-[#ff4b8b] hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+    >
+      Ver todas las temáticas <span class="text-lg leading-none">&rarr;</span>
+    </a>
+  </div>
+
+  <!-- Contenedor deslizable -->
+  <!-- pt-2 y pb-6 dan espacio para que la sombra de los círculos no se corte -->
+  <div class="flex items-start gap-3 sm:gap-5 md:gap-8 overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pt-2 pb-6 px-1">
+    {tematicas.map((item) => (
+      <a
+        href={`/tematicas/${item.slug}`}
+        class="flex flex-col items-center gap-1.5 sm:gap-2.5 shrink-0 snap-start group"
+      >
+        <!-- Círculo de la imagen (Tamaños reducidos y diseño premium) -->
+        <div class="w-[65px] h-[65px] sm:w-[90px] sm:h-[90px] md:w-[105px] md:h-[105px] rounded-full overflow-hidden bg-gradient-to-br from-pink-50 to-white border-2 border-white shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)] group-hover:shadow-[0_8px_20px_-6px_rgba(255,75,139,0.5)] group-hover:border-pink-200 group-hover:-translate-y-1.5 transition-all duration-300 flex items-center justify-center relative shrink-0">
+          <img
+            src={item.imagen}
+            alt={`Temática ${item.nombre}`}
+            class="w-[90%] h-[90%] object-cover group-hover:scale-110 transition-transform duration-500 rounded-full"
+            loading="lazy"
+          />
+        </div>
+
+        <!-- Texto inferior (Más pequeño y delicado) -->
+        <span class="text-[11px] sm:text-xs md:text-sm font-bold text-gray-600 font-['Quicksand'] group-hover:text-[#ff4b8b] transition-colors text-center w-full max-w-[70px] sm:max-w-[100px] leading-tight">
+          {item.nombre}
+        </span>
+      </a>
+    ))}
+  </div>
+
+  <!-- Botón Móvil -->
+  <div class="mt-2 flex justify-center sm:hidden px-4">
+    <a
+      href="/tematicas"
+      class="inline-flex items-center justify-center gap-2 bg-pink-50/80 text-[#ff4b8b] border border-pink-200 rounded-full px-6 py-2.5 text-xs font-bold font-['Quicksand'] hover:bg-[#ff4b8b] hover:text-white active:scale-95 transition-all duration-300 w-full shadow-sm"
+    >
+      Ver todas las temáticas &rarr;
+    </a>
+  </div>
+</section>

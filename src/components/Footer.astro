@@ -1,0 +1,410 @@
+---
+// src/components/astro/Footer.astro
+---
+
+<footer class="w-full bg-[#fdf2f8] mt-12 border-t border-pink-100">
+  <!-- Contenedor Principal (5 Columnas) -->
+  <div class="max-w-7xl mx-auto px-4 py-10 lg:py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-4">
+    <!-- 1. Logo (Columna 1) -->
+    <div class="flex flex-col items-center sm:items-start justify-center lg:pr-4">
+      <!-- Reemplaza este img con tu logo real "Gloria Lobatón Archivos" -->
+      <img
+        src="https://api.dicebear.com/7.x/initials/svg?seed=GL&backgroundColor=ffcce6&textColor=d81b60"
+        alt="Gloria Lobatón Archivos"
+        class="h-20 md:h-24 w-auto object-contain drop-shadow-sm mb-4"
+        loading="lazy"
+      />
+    </div>
+
+    <!-- 2. Enlaces de Interés -->
+    <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+      <h3 class="text-[#5e2154] font-extrabold font-['Quicksand'] text-sm md:text-base mb-4">
+        Enlaces de Interés
+      </h3>
+      <ul class="space-y-2.5">
+        <li>
+          <a
+            href="/"
+            class="group flex items-center gap-2 text-[#5e2154]/80 hover:text-[#d81b60] font-medium font-['Quicksand'] text-xs sm:text-sm transition-all duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+              />
+            </svg>
+            Inicio
+          </a>
+        </li>
+        <li>
+          <a
+            href="/tematicas"
+            class="group flex items-center gap-2 text-[#5e2154]/80 hover:text-[#d81b60] font-medium font-['Quicksand'] text-xs sm:text-sm transition-all duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"
+              />
+            </svg>
+            Temáticas
+          </a>
+        </li>
+        <li>
+          <a
+            href="/categorias"
+            class="group flex items-center gap-2 text-[#5e2154]/80 hover:text-[#d81b60] font-medium font-['Quicksand'] text-xs sm:text-sm transition-all duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 01-1.125-1.125v-3.75zM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-8.25zM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-2.25z"
+              />
+            </svg>
+            Categorías
+          </a>
+        </li>
+        <li>
+          <a
+            href="/novedades"
+            class="group flex items-center gap-2 text-[#5e2154]/80 hover:text-[#d81b60] font-medium font-['Quicksand'] text-xs sm:text-sm transition-all duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+              />
+            </svg>
+            Novedades
+          </a>
+        </li>
+        <li>
+          <a
+            href="/promociones"
+            class="group flex items-center gap-2 text-[#5e2154]/80 hover:text-[#d81b60] font-medium font-['Quicksand'] text-xs sm:text-sm transition-all duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
+              />
+            </svg>
+            Promociones
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 3. Ayuda y Compras -->
+    <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+      <h3 class="text-[#5e2154] font-extrabold font-['Quicksand'] text-sm md:text-base mb-4">
+        Ayuda y compras
+      </h3>
+      <ul class="space-y-2.5">
+        <li>
+          <a
+            href="/faq"
+            class="group flex items-center gap-2 text-[#5e2154]/80 hover:text-[#d81b60] font-medium font-['Quicksand'] text-xs sm:text-sm transition-all duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"
+              />
+            </svg>
+            Preguntas frecuentes
+          </a>
+        </li>
+        <li>
+          <a
+            href="/como-descargar"
+            class="group flex items-center gap-2 text-[#5e2154]/80 hover:text-[#d81b60] font-medium font-['Quicksand'] text-xs sm:text-sm transition-all duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+              />
+            </svg>
+            Cómo descargar
+          </a>
+        </li>
+        <li>
+          <a
+            href="/terminos"
+            class="group flex items-center gap-2 text-[#5e2154]/80 hover:text-[#d81b60] font-medium font-['Quicksand'] text-xs sm:text-sm transition-all duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9zm3.75 11.625a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+              />
+            </svg>
+            Términos y condiciones
+          </a>
+        </li>
+        <li>
+          <a
+            href="/privacidad"
+            class="group flex items-center gap-2 text-[#5e2154]/80 hover:text-[#d81b60] font-medium font-['Quicksand'] text-xs sm:text-sm transition-all duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+              />
+            </svg>
+            Política de privacidad
+          </a>
+        </li>
+        <li>
+          <a
+            href="/contacto"
+            class="group flex items-center gap-2 text-[#5e2154]/80 hover:text-[#d81b60] font-medium font-['Quicksand'] text-xs sm:text-sm transition-all duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+              />
+            </svg>
+            Contacto
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 4. Descubre más (Redes Sociales) -->
+    <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+      <h3 class="text-[#5e2154] font-extrabold font-['Quicksand'] text-sm md:text-base mb-4">
+        Descubre más
+      </h3>
+      <ul class="space-y-3">
+        <li>
+          <a
+            href="#"
+            class="group flex items-center gap-2 text-[#5e2154]/80 hover:text-[#d81b60] font-medium font-['Quicksand'] text-xs sm:text-sm transition-all duration-300"
+          >
+            <!-- Icono YouTube -->
+            <svg
+              class="w-5 h-5 text-[#ff0000] group-hover:scale-110 transition-transform"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+            </svg>
+            YouTube
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            class="group flex items-center gap-2 text-[#5e2154]/80 hover:text-[#d81b60] font-medium font-['Quicksand'] text-xs sm:text-sm transition-all duration-300"
+          >
+            <!-- Icono Instagram (Gradiente simulado) -->
+            <svg
+              class="w-5 h-5 text-[#E1306C] group-hover:scale-110 transition-transform"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+            </svg>
+            Instagram
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            class="group flex items-center gap-2 text-[#5e2154]/80 hover:text-[#d81b60] font-medium font-['Quicksand'] text-xs sm:text-sm transition-all duration-300"
+          >
+            <!-- Icono Facebook -->
+            <svg
+              class="w-5 h-5 text-[#1877F2] group-hover:scale-110 transition-transform"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+            </svg>
+            Facebook
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            class="group flex items-center gap-2 text-[#5e2154]/80 hover:text-[#d81b60] font-medium font-['Quicksand'] text-xs sm:text-sm transition-all duration-300"
+          >
+            <!-- Icono TikTok (Music) -->
+            <svg
+              class="w-5 h-5 text-gray-800 group-hover:scale-110 transition-transform"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.04.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93v7.2c0 1.96-.5 3.96-1.7 5.5-1.17 1.5-2.87 2.5-4.8 2.87-2.1.4-4.4-.04-6.18-1.3-1.69-1.19-2.77-3.08-3.06-5.1-.33-2.33.24-4.82 1.75-6.62 1.48-1.77 3.73-2.82 6.04-2.87v4.06c-1.09.05-2.18.49-2.92 1.34-.7.8-.97 1.93-.72 3.01.24 1.05.9 1.95 1.83 2.41.97.47 2.18.5 3.19.14.88-.31 1.57-1.02 1.87-1.91.13-.39.18-.8.18-1.2V.02z" />
+            </svg>
+            Team Crafter Music
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 5. Medios de pago -->
+    <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+      <h3 class="text-[#5e2154] font-extrabold font-['Quicksand'] text-sm md:text-base mb-4">
+        Medios de pago
+      </h3>
+
+      <!-- Grid de logos de pago (Diseño basado en CSS para simular las insignias de tu imagen) -->
+      <div class="grid grid-cols-3 gap-2 sm:gap-3">
+        <!-- VISA -->
+        <div class="bg-white border border-gray-200 rounded px-2 py-1.5 flex justify-center items-center h-8 w-12 shadow-sm">
+          <span class="text-[10px] font-bold text-blue-800 italic tracking-tighter">VISA</span>
+        </div>
+        <!-- Mastercard (Círculos entrelazados simulados) -->
+        <div class="bg-white border border-gray-200 rounded px-2 py-1.5 flex justify-center items-center h-8 w-12 shadow-sm relative overflow-hidden">
+          <div class="w-4 h-4 rounded-full bg-red-500 absolute left-2 opacity-90"></div>
+          <div class="w-4 h-4 rounded-full bg-yellow-500 absolute right-2 opacity-90"></div>
+        </div>
+        <!-- PayPal -->
+        <div class="bg-white border border-gray-200 rounded px-1 py-1.5 flex justify-center items-center h-8 w-12 shadow-sm">
+          <span class="text-[9px] font-bold text-blue-900 italic">PayPal</span>
+        </div>
+        <!-- Mercado Pago -->
+        <div class="bg-[#009ee3] border border-transparent rounded px-1 py-1 flex justify-center items-center h-8 w-12 shadow-sm">
+          <span class="text-[7px] font-bold text-white text-center leading-tight">
+            mercado
+            <br />
+            pago
+          </span>
+        </div>
+        <!-- Yape (Morado) -->
+        <div class="bg-[#742384] border border-transparent rounded px-1 py-1 flex justify-center items-center h-8 w-12 shadow-sm">
+          <span class="text-[10px] font-bold text-white tracking-wide">yape</span>
+        </div>
+        <!-- Plin (Celeste) -->
+        <div class="bg-[#00c2cb] border border-transparent rounded px-1 py-1 flex justify-center items-center h-8 w-12 shadow-sm">
+          <span class="text-[10px] font-bold text-white tracking-wide">plin</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Franja Inferior (Copyright y Redes) -->
+  <!-- Color basado en la banda fucsia de tu imagen[cite: 9] -->
+  <div class="w-full bg-[#c21455] py-3 sm:py-4">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <!-- Copyright[cite: 9] -->
+      <p class="text-white/90 font-['Quicksand'] text-[10px] sm:text-xs font-medium text-center sm:text-left">
+        © Gloria Lobatón Archivos 2.0 – Todos los derechos reservados.
+      </p>
+
+      <!-- Síguenos en (Iconos Blancos)[cite: 9] -->
+      <div class="flex items-center gap-3">
+        <span class="text-white font-['Quicksand'] text-[10px] sm:text-xs font-medium mr-1">
+          Síguenos en:
+        </span>
+
+        <!-- Redes sociales pequeñas[cite: 9] -->
+        <a href="#" class="text-white hover:text-pink-200 transition-colors" aria-label="YouTube">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+          </svg>
+        </a>
+        <a href="#" class="text-white hover:text-pink-200 transition-colors" aria-label="Instagram">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+          </svg>
+        </a>
+        <a href="#" class="text-white hover:text-pink-200 transition-colors" aria-label="Facebook">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+          </svg>
+        </a>
+        <a href="#" class="text-white hover:text-pink-200 transition-colors" aria-label="TikTok">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.04.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93v7.2c0 1.96-.5 3.96-1.7 5.5-1.17 1.5-2.87 2.5-4.8 2.87-2.1.4-4.4-.04-6.18-1.3-1.69-1.19-2.77-3.08-3.06-5.1-.33-2.33.24-4.82 1.75-6.62 1.48-1.77 3.73-2.82 6.04-2.87v4.06c-1.09.05-2.18.49-2.92 1.34-.7.8-.97 1.93-.72 3.01.24 1.05.9 1.95 1.83 2.41.97.47 2.18.5 3.19.14.88-.31 1.57-1.02 1.87-1.91.13-.39.18-.8.18-1.2V.02z" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

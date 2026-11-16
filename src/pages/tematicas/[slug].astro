@@ -1,0 +1,376 @@
+---
+// src/pages/tematicas/[slug].astro
+import CardProducto from '../../components/CardProducto.astro';
+import Paginacion from '../../components/tematicas/Paginacion.astro';
+import SidebarFiltros from '../../components/tematicas/SidebarFiltros.astro';
+import TopBarResultados from '../../components/tematicas/TopBarResultados.astro';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const tematicasValidas = [
+    { slug: 'navidad', nombre: 'Navidad' },
+    { slug: 'barbie', nombre: 'Barbie' },
+    { slug: 'mario-bros', nombre: 'Mario Bros' },
+  ];
+  return tematicasValidas.map((tematica) => ({
+    params: { slug: tematica.slug },
+    props: { tematica },
+  }));
+}
+
+const { tematica } = Astro.props;
+
+const categorias = [
+  { id: 'golosineros', label: 'Golosineros', count: 3 },
+  { id: 'toppers', label: 'Cake Toppers', count: 2 },
+  { id: 'cajas', label: 'Cajas y Empaques', count: 3 },
+];
+
+const formatos = [
+  { id: 'studio-svg', label: 'STUDIO / SVG', count: 6 },
+  { id: 'pdf', label: 'PDF', count: 2 },
+];
+
+const productosNavidad = [
+  {
+    id: 1,
+    categoriaId: 'cajas',
+    formatoId: 'studio-svg',
+    nombre: 'Caja Santa Claus',
+    formatos: 'STUDIO / SVG',
+    precio: '14.90',
+    badge: 'Nuevo',
+    badgeColor: 'bg-[#ff4b8b]',
+    imagen:
+      'https://images.unsplash.com/photo-1608889175250-c3b0c1667d3a?q=80&w=500&auto=format&fit=crop',
+  },
+  {
+    id: 2,
+    categoriaId: 'golosineros',
+    formatoId: 'studio-svg',
+    nombre: 'Golosinero Reno',
+    formatos: 'STUDIO / SVG',
+    precio: '12.90',
+    badge: 'Bestseller',
+    badgeColor: 'bg-[#ff9f43]',
+    imagen:
+      'https://images.unsplash.com/photo-1512474932049-78ac69ede12c?q=80&w=500&auto=format&fit=crop',
+  },
+  {
+    id: 3,
+    categoriaId: 'cajas',
+    formatoId: 'pdf',
+    nombre: 'Casa de Jengibre',
+    formatos: 'PDF',
+    precio: '16.90',
+    badge: 'Nuevo',
+    badgeColor: 'bg-[#ff4b8b]',
+    imagen:
+      'https://images.unsplash.com/photo-1607262807149-eba52bb16676?q=80&w=500&auto=format&fit=crop',
+  },
+  {
+    id: 4,
+    categoriaId: 'golosineros',
+    formatoId: 'studio-svg',
+    nombre: 'Mochila Navideña',
+    formatos: 'STUDIO / SVG',
+    precio: '15.90',
+    badge: 'Bestseller',
+    badgeColor: 'bg-[#ff9f43]',
+    imagen:
+      'https://images.unsplash.com/photo-1608889825103-eb5ed706fc64?q=80&w=500&auto=format&fit=crop',
+  },
+  {
+    id: 5,
+    categoriaId: 'cajas',
+    formatoId: 'studio-svg',
+    nombre: 'Caja Cascanueces',
+    formatos: 'STUDIO / SVG',
+    precio: '14.90',
+    badge: 'Nuevo',
+    badgeColor: 'bg-[#ff4b8b]',
+    imagen:
+      'https://images.unsplash.com/photo-1543589077-47d81606c1bf?q=80&w=500&auto=format&fit=crop',
+  },
+  {
+    id: 6,
+    categoriaId: 'toppers',
+    formatoId: 'studio-svg',
+    nombre: 'Topper Árbol Navideño',
+    formatos: 'STUDIO / SVG',
+    precio: '13.90',
+    badge: 'Bestseller',
+    badgeColor: 'bg-[#ff9f43]',
+    imagen:
+      'https://images.unsplash.com/photo-1576692155415-95f820a3cda8?q=80&w=500&auto=format&fit=crop',
+  },
+  {
+    id: 7,
+    categoriaId: 'golosineros',
+    formatoId: 'pdf',
+    nombre: 'Caja Muñeco Nieve',
+    formatos: 'PDF',
+    precio: '12.90',
+    badge: 'Nuevo',
+    badgeColor: 'bg-[#ff4b8b]',
+    imagen:
+      'https://images.unsplash.com/photo-1543632230-0eb274640bc7?q=80&w=500&auto=format&fit=crop',
+  },
+  {
+    id: 8,
+    categoriaId: 'toppers',
+    formatoId: 'studio-svg',
+    nombre: 'Topper Mamá Noela',
+    formatos: 'STUDIO / SVG',
+    precio: '14.90',
+    badge: 'Nuevo',
+    badgeColor: 'bg-[#ff4b8b]',
+    imagen:
+      'https://images.unsplash.com/photo-1608889175250-c3b0c1667d3a?q=80&w=500&auto=format&fit=crop',
+  },
+];
+---
+
+<Layout title={`Temática: ${tematica.nombre} | Tu Tienda`}>
+  <main class="w-full bg-[#fcfcfc] min-h-screen pt-4 pb-16">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8">
+      <TopBarResultados tematicaNombre={tematica.nombre} totalProductos={productosNavidad.length} />
+
+      <div class="flex flex-col lg:flex-row items-start gap-6 lg:gap-8">
+        <SidebarFiltros categorias={categorias} formatos={formatos} />
+
+        <section class="flex-1 w-full">
+          <div
+            id="grid-productos"
+            class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 transition-all relative"
+          >
+            {productosNavidad.map((prod) => (
+              <div
+                class="producto-item transition-all duration-300 origin-center"
+                data-categoria={prod.categoriaId}
+                data-formato={prod.formatoId}
+                data-precio={prod.precio}
+                data-id={prod.id}
+              >
+                <CardProducto
+                  nombre={prod.nombre}
+                  formatos={prod.formatos}
+                  precio={prod.precio}
+                  imagen={prod.imagen}
+                  badge={prod.badge}
+                  badgeColor={prod.badgeColor}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div
+            id="estado-vacio"
+            class="hidden flex-col items-center justify-center py-20 text-center"
+          >
+            <svg
+              class="w-16 h-16 text-gray-300 mb-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              />
+            </svg>
+            <h3 class="text-xl font-bold text-gray-700 font-['Quicksand'] mb-2">
+              No hay productos que coincidan
+            </h3>
+            <p class="text-sm text-gray-500 font-['Quicksand']">
+              Intenta quitar algunos filtros para ver más resultados.
+            </p>
+          </div>
+
+          <Paginacion />
+        </section>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Referencias para Filtros
+    const checkboxes = document.querySelectorAll(
+      '.filter-checkbox'
+    ) as NodeListOf<HTMLInputElement>;
+    const gridContainer = document.getElementById('grid-productos');
+    const btnLimpiar = document.getElementById('btn-limpiar-filtros');
+    const contador = document.getElementById('contador-actual');
+    const estadoVacio = document.getElementById('estado-vacio');
+    const paginacion = document.getElementById('paginacion-container');
+
+    let productosArray = Array.from(document.querySelectorAll('.producto-item')) as HTMLElement[];
+
+    /* --- LÓGICA DE ORDENAMIENTO (SORTING) --- */
+    window.addEventListener('sort-products', (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const sortType = customEvent.detail.sort;
+
+      // Ordenar el array de elementos HTML
+      productosArray.sort((a, b) => {
+        const priceA = parseFloat(a.dataset.precio || '0');
+        const priceB = parseFloat(b.dataset.precio || '0');
+        const idA = parseInt(a.dataset.id || '0');
+        const idB = parseInt(b.dataset.id || '0');
+
+        switch (sortType) {
+          case 'price-asc':
+            return priceA - priceB;
+          case 'price-desc':
+            return priceB - priceA;
+          case 'popular':
+            return idA - idB; // Simulación: ID más bajo = más popular
+          case 'recent':
+            return idB - idA; // Simulación: ID más alto = más reciente
+          default:
+            return 0;
+        }
+      });
+
+      // Vaciar y reinsertar los elementos en el nuevo orden usando DocumentFragment para mejor rendimiento
+      if (gridContainer) {
+        gridContainer.innerHTML = '';
+        const fragment = document.createDocumentFragment();
+        productosArray.forEach((prod) => fragment.appendChild(prod));
+        gridContainer.appendChild(fragment);
+      }
+    });
+
+    /* --- LÓGICA DE FILTROS --- */
+    const aplicarFiltros = () => {
+      const categoriasSeleccionadas = Array.from(checkboxes)
+        .filter((cb) => cb.checked && cb.dataset.group === 'categoria' && cb.value !== 'todos')
+        .map((cb) => cb.value);
+
+      const formatosSeleccionados = Array.from(checkboxes)
+        .filter((cb) => cb.checked && cb.dataset.group === 'formato')
+        .map((cb) => cb.value);
+
+      const checkboxTodos = document.querySelector('input[value="todos"]') as HTMLInputElement;
+      let filtrosActivos = categoriasSeleccionadas.length > 0 || formatosSeleccionados.length > 0;
+
+      if (checkboxTodos) checkboxTodos.checked = categoriasSeleccionadas.length === 0;
+
+      if (btnLimpiar) {
+        if (filtrosActivos) {
+          btnLimpiar.classList.remove('hidden', 'opacity-0');
+          btnLimpiar.classList.add('flex');
+        } else {
+          btnLimpiar.classList.add('hidden', 'opacity-0');
+          btnLimpiar.classList.remove('flex');
+        }
+      }
+
+      let countVisibles = 0;
+
+      productosArray.forEach((prod) => {
+        const cat = prod.dataset.categoria || '';
+        const fmt = prod.dataset.formato || '';
+        const pasaCategoria =
+          categoriasSeleccionadas.length === 0 || categoriasSeleccionadas.includes(cat);
+        const pasaFormato =
+          formatosSeleccionados.length === 0 || formatosSeleccionados.includes(fmt);
+
+        if (pasaCategoria && pasaFormato) {
+          prod.style.display = 'block';
+          prod.animate(
+            [
+              { opacity: 0, transform: 'scale(0.95)' },
+              { opacity: 1, transform: 'scale(1)' },
+            ],
+            { duration: 300, easing: 'ease-out' }
+          );
+          countVisibles++;
+        } else {
+          prod.style.display = 'none';
+        }
+      });
+
+      if (contador) contador.textContent = countVisibles.toString();
+
+      if (countVisibles === 0) {
+        estadoVacio?.classList.remove('hidden');
+        estadoVacio?.classList.add('flex');
+        paginacion?.classList.add('hidden');
+      } else {
+        estadoVacio?.classList.add('hidden');
+        estadoVacio?.classList.remove('flex');
+        paginacion?.classList.remove('hidden');
+      }
+    };
+
+    checkboxes.forEach((cb) => {
+      cb.addEventListener('change', (e) => {
+        const target = e.target as HTMLInputElement;
+        if (target.value === 'todos' && target.checked) {
+          checkboxes.forEach((box) => {
+            if (box.dataset.group === 'categoria' && box.value !== 'todos') box.checked = false;
+          });
+        }
+        aplicarFiltros();
+      });
+    });
+
+    if (btnLimpiar) {
+      btnLimpiar.addEventListener('click', () => {
+        checkboxes.forEach((cb) => {
+          if (cb.value === 'todos') {
+            cb.checked = true;
+          } else {
+            cb.checked = false;
+          }
+        });
+        aplicarFiltros();
+      });
+    }
+  });
+</script>
+
+<style is:global>
+  /* --- ESTILOS PARA LA VISTA DE LISTA --- */
+  #grid-productos.list-view {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  #grid-productos.list-view .producto-item article {
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem;
+    gap: 1.5rem;
+    text-align: left;
+  }
+
+  #grid-productos.list-view .producto-item article > a.aspect-square {
+    width: 140px;
+    height: 140px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  #grid-productos.list-view .producto-item article .flex-1 {
+    justify-content: center;
+    padding-right: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    #grid-productos.list-view .producto-item article {
+      padding: 0.75rem;
+      gap: 1rem;
+    }
+    #grid-productos.list-view .producto-item article > a.aspect-square {
+      width: 100px;
+      height: 100px;
+    }
+  }
+</style>

@@ -1,0 +1,42 @@
+---
+// Importas tu Layout base
+import Banner from '../components/Banner.astro';
+import Header from '../components/header/Header.astro';
+import MainNav from '../components/mainNav/MainNav.astro';
+import TopBar from '../components/TopBar.astro';
+import Layout from '../layouts/Layout.astro';
+import ExploraTematicas from '../components/ExploraTematicas.astro';
+import BannerCategorias from '../components/BannerCategorias.astro';
+import ProductosDestacados from '../components/ProductosDestacados.astro';
+import LoMasReciente from '../components/LoMasReciente.astro';
+import ClubSuscriptores from '../components/ClubSuscriptores.astro';
+// Aquí importarás tus componentes estáticos (Astro) cuando los crees
+// import TopBar from '../components/astro/TopBar.astro';
+// import HeroBanner from '../components/astro/HeroBanner.astro';
+// import CategoryGrid from '../components/astro/CategoryGrid.astro';
+// import BenefitsBar from '../components/astro/BenefitsBar.astro';
+
+// Aquí importarás tus componentes interactivos (React con HeroUI) cuando los crees
+// import Header from '../components/react/Header.tsx';
+// import MainNav from '../components/react/MainNav.tsx';
+// import ProductSlider from '../components/react/ProductSlider.tsx';
+
+// Más adelante aquí haremos el fetch a tu backend en Node/Express/Sequelize:
+// const res = await fetch('http://localhost:3000/api/productos/destacados');
+// const productosDestacados = await res.json();
+---
+
+<Layout title="Inicio | Archivos Digitales">
+  <main class="w-full">
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-2 mb-8">
+      <Banner />
+      <ExploraTematicas />
+      <BannerCategorias />
+      <ProductosDestacados />
+    </div>
+    <LoMasReciente />
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-2 mb-8">
+      <ClubSuscriptores />
+    </div>
+  </main>
+</Layout>

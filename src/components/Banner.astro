@@ -1,0 +1,229 @@
+---
+// src/components/astro/Banner.astro
+
+const banners = [
+  {
+    id: 1,
+    imagen:
+      'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop',
+    alt: 'Gran promoción de Navidad',
+    link: '/tematicas/navidad',
+  },
+  {
+    id: 2,
+    imagen:
+      'https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?q=80&w=2000&auto=format&fit=crop',
+    alt: 'Nuevos diseños de Papelería Creativa',
+    link: '/categorias/papeleria-creativa',
+  },
+  {
+    id: 3,
+    imagen:
+      'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?q=80&w=2074&auto=format&fit=crop',
+    alt: 'Únete al Club de Suscriptores',
+    link: '/club',
+  },
+];
+
+// Creamos un nuevo array añadiendo el último banner al inicio y el primer banner al final
+const extendedBanners = [
+  banners[banners.length - 1], // Clon del último
+  ...banners, // Los banners reales
+  banners[0], // Clon del primero
+];
+---
+
+<div class="relative w-full max-w-7xl mx-auto group">
+  <!-- Contenedor del Carrusel -->
+  <!-- NOTA: Quitamos scroll-smooth de las clases de Tailwind, lo controlaremos desde JS -->
+  <div
+    id="banner-slider"
+    class="flex overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] rounded-3xl w-full"
+  >
+    {extendedBanners.map((banner) => (
+      <div class="min-w-full w-full shrink-0 snap-center relative aspect-[4/3] sm:aspect-[21/9] md:aspect-[3/1] bg-gray-100 rounded-3xl overflow-hidden">
+        <a href={banner.link} class="block w-full h-full relative overflow-hidden cursor-pointer">
+          <img
+            src={banner.imagen}
+            alt={banner.alt}
+            class="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+            loading="lazy"
+          />
+        </a>
+      </div>
+    ))}
+  </div>
+
+  <!-- Botones de Navegación -->
+  <button
+    id="prev-slide"
+    class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-[#ff4b8b] p-2 sm:p-3 rounded-full shadow-md backdrop-blur-sm opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 hidden sm:block focus:outline-none z-10"
+    aria-label="Anterior banner"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="2.5"
+      stroke="currentColor"
+      class="w-5 h-5 sm:w-6 sm:h-6"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+    </svg>
+  </button>
+
+  <button
+    id="next-slide"
+    class="absolute right-2 sm:left-auto sm:right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-[#ff4b8b] p-2 sm:p-3 rounded-full shadow-md backdrop-blur-sm opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 hidden sm:block focus:outline-none z-10"
+    aria-label="Siguiente banner"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="2.5"
+      stroke="currentColor"
+      class="w-5 h-5 sm:w-6 sm:h-6"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+    </svg>
+  </button>
+
+  <!-- Puntos Indicadores (Se renderizan basados en los banners originales, no los clonados) -->
+  <div class="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+    {banners.map((_, index) => (
+      <button
+        class={`slide-dot w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 shadow-sm ${index === 0 ? 'bg-white w-6 sm:w-8' : 'bg-white/50 hover:bg-white/80'}`}
+        data-index={index}
+        aria-label={`Ir al banner ${index + 1}`}
+      ></button>
+    ))}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const slider = document.getElementById('banner-slider');
+    const prevBtn = document.getElementById('prev-slide');
+    const nextBtn = document.getElementById('next-slide');
+    const dots = document.querySelectorAll('.slide-dot');
+
+    if (!slider || !prevBtn || !nextBtn) return;
+
+    const totalRealSlides = dots.length;
+    let currentIndex = 1; // Empezamos en 1 porque el 0 es un clon
+    let autoPlayInterval: number;
+    let scrollTimeout: number;
+
+    // Al cargar, posicionamos el scroll en el primer banner real sin animación
+    setTimeout(() => {
+      slider.scrollLeft = slider.clientWidth;
+      slider.classList.add('scroll-smooth');
+    }, 50);
+
+    const updateDots = (index: number) => {
+      let dotIndex = index - 1;
+      if (dotIndex < 0) dotIndex = totalRealSlides - 1;
+      if (dotIndex >= totalRealSlides) dotIndex = 0;
+
+      dots.forEach((dot, i) => {
+        if (i === dotIndex) {
+          dot.classList.add('bg-white', 'w-6', 'sm:w-8');
+          dot.classList.remove('bg-white/50');
+        } else {
+          dot.classList.remove('bg-white', 'w-6', 'sm:w-8');
+          dot.classList.add('bg-white/50');
+        }
+      });
+    };
+
+    const goToSlide = (index: number) => {
+      currentIndex = index;
+      slider.classList.add('scroll-smooth');
+      slider.scrollTo({
+        left: slider.clientWidth * currentIndex,
+        behavior: 'smooth',
+      });
+    };
+
+    const nextSlide = () => goToSlide(currentIndex + 1);
+    const prevSlide = () => goToSlide(currentIndex - 1);
+
+    prevBtn.addEventListener('click', () => {
+      prevSlide();
+      resetAutoPlay();
+    });
+    nextBtn.addEventListener('click', () => {
+      nextSlide();
+      resetAutoPlay();
+    });
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        // Le sumamos 1 al índice porque en el DOM real hay un clon antes
+        const index = parseInt(target.getAttribute('data-index') || '0') + 1;
+        goToSlide(index);
+        resetAutoPlay();
+      });
+    });
+
+    // Lógica principal de salto invisible
+    slider.addEventListener(
+      'scroll',
+      () => {
+        const slideWidth = slider.clientWidth;
+        if (slideWidth === 0) return;
+
+        const exactIndex = slider.scrollLeft / slideWidth;
+        const newIndex = Math.round(exactIndex);
+
+        if (newIndex !== currentIndex) {
+          currentIndex = newIndex;
+          updateDots(currentIndex);
+        }
+
+        // Detectamos cuándo se detiene el scroll (ya sea con dedo o botón)
+        clearTimeout(scrollTimeout);
+        scrollTimeout = window.setTimeout(() => {
+          // Si llegamos al clon del final (después de la última imagen real)
+          if (currentIndex === totalRealSlides + 1) {
+            slider.classList.remove('scroll-smooth'); // Desactivamos animación
+            slider.scrollLeft = slideWidth; // Saltamos invisiblemente al 1 real
+            currentIndex = 1;
+          }
+          // Si llegamos al clon del principio (antes de la primera imagen real)
+          else if (currentIndex === 0) {
+            slider.classList.remove('scroll-smooth'); // Desactivamos animación
+            slider.scrollLeft = slideWidth * totalRealSlides; // Saltamos al último real
+            currentIndex = totalRealSlides;
+          }
+        }, 150); // 150ms asegura que termine la inercia del dedo antes del salto
+      },
+      { passive: true }
+    );
+
+    // Evitar que el redimensionamiento de pantalla rompa la alineación
+    window.addEventListener('resize', () => {
+      slider.classList.remove('scroll-smooth');
+      slider.scrollLeft = slider.clientWidth * currentIndex;
+    });
+
+    // Autoplay
+    const startAutoPlay = () => {
+      autoPlayInterval = window.setInterval(nextSlide, 5000);
+    };
+
+    const resetAutoPlay = () => {
+      clearInterval(autoPlayInterval);
+      startAutoPlay();
+    };
+
+    slider.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+    slider.addEventListener('mouseleave', startAutoPlay);
+    slider.addEventListener('touchstart', () => clearInterval(autoPlayInterval), { passive: true });
+    slider.addEventListener('touchend', startAutoPlay);
+
+    startAutoPlay();
+  });
+</script>
