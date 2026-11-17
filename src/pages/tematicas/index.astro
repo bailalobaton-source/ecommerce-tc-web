@@ -1,94 +1,73 @@
 ---
-// src/pages/tematicas/index.astro
+import { API_URL_UPLOADS } from '../../../api';
 import Layout from '../../layouts/Layout.astro';
+import { getTematicasGlobales } from '../../utils/apiTematicas';
 
-// Datos de ejemplo ampliados para que coincidan con el filtro
-const tematicas = [
-  {
-    nombre: 'Barbie',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Barbie&backgroundColor=fce4ec',
-    slug: 'barbie',
-  },
-  {
-    nombre: 'Bella Y Bestia',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bella&backgroundColor=fff9c4',
-    slug: 'bella-y-bestia',
-  },
-  {
-    nombre: 'Hadas',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hadas&backgroundColor=e0f7fa',
-    slug: 'hadas',
-  },
-  {
-    nombre: 'My Little Pony',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pony&backgroundColor=f3e5f5',
-    slug: 'my-little-pony',
-  },
-  {
-    nombre: 'Cazadoras Kpop',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kpop&backgroundColor=ede7f6',
-    slug: 'cazadoras-kpop',
-  },
-  {
-    nombre: 'Toy Story',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Toy&backgroundColor=e8f5e9',
-    slug: 'toy-story',
-  },
-  {
-    nombre: 'Mario Bros',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Mario&backgroundColor=e3f2fd',
-    slug: 'mario-bros',
-  },
-  {
-    nombre: 'Fresita',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Fresita&backgroundColor=ffebee',
-    slug: 'fresita',
-  },
-  {
-    nombre: 'American Girl',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=American&backgroundColor=ffebee',
-    slug: 'american-girl',
-  },
-  {
-    nombre: 'Disney Frozen',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Frozen&backgroundColor=e0f7fa',
-    slug: 'disney-frozen',
-  },
-  {
-    nombre: 'Hot Wheels',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Wheels&backgroundColor=fff9c4',
-    slug: 'hot-wheels',
-  },
-];
+// 1. OBTENEMOS TODAS LAS TEMÁTICAS DE LA BASE DE DATOS
+const tematicasBD = await getTematicasGlobales();
 
-// Datos del índice lateral
-const brandsIndex = [
-  { letter: 'A', links: ['American Girl'] },
-  { letter: 'B', links: ['Barbie', 'Barney'] },
-  {
-    letter: 'D',
-    links: [
-      'DC Universe',
-      'Disney',
-      'Descendants',
-      'Disney Frozen',
-      'Disney Moana',
-      'Disney Princess',
-      'Disney Zombies',
-      'Disney and Pixar',
-    ],
-  },
-  { letter: 'F', links: ['Fisher-Price', 'Wooden Toys'] },
-  { letter: 'H', links: ['Hot Wheels', 'Harry Potter'] },
-];
+// 2. FORMATEAMOS LOS DATOS (Imágenes seguras, colores y slugs)
+const gridItems = tematicasBD.map((t) => {
+  const colorSeguro = t.color_tematica || '#fce4ec';
 
-// Simulamos una cuadrícula llena repitiendo los elementos para visualización
-const gridItems = [...tematicas, ...tematicas, ...tematicas];
+  let imagenSegura = '';
+  if (t.img_tematica) {
+    imagenSegura = t.img_tematica.startsWith('http')
+      ? t.img_tematica
+      : `${API_URL_UPLOADS}/${t.img_tematica}`;
+  } else {
+    imagenSegura = `https://api.dicebear.com/7.x/avataaars/svg?seed=${t.nombre_tematica}&backgroundColor=transparent`;
+  }
+
+  return {
+    nombre: t.nombre_tematica,
+    imagen: imagenSegura,
+    color: colorSeguro,
+    slug: t.nombre_tematica
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '-'),
+  };
+});
+
+// 3. GENERAMOS EL ÍNDICE ALFABÉTICO DINÁMICAMENTE (Brands A - Z)
+// Esto agrupa las temáticas por su primera letra.
+const groupedBrands = gridItems.reduce(
+  (acc, curr) => {
+    // Tomamos la primera letra y la ponemos en mayúscula (ej: "mario" -> "M")
+    const letter = curr.nombre.charAt(0).toUpperCase();
+
+    // Si no es una letra (ej: empieza con un número), la agrupamos en "#"
+    const isLetter = /[A-Z]/.test(letter);
+    const finalLetter = isLetter ? letter : '#';
+
+    if (!acc[finalLetter]) {
+      acc[finalLetter] = [];
+    }
+
+    // Solo agregamos el nombre si no está ya en la lista (evitar duplicados si hay dos temáticas llamadas muy parecido)
+    if (!acc[finalLetter].includes(curr.nombre)) {
+      acc[finalLetter].push(curr.nombre);
+    }
+    return acc;
+  },
+  {} as Record<string, string[]>
+);
+
+// Convertimos el objeto en un array ordenado alfabéticamente para renderizarlo
+const brandsIndex = Object.keys(groupedBrands)
+  .sort() // Ordena A, B, C...
+  .map((letter) => ({
+    letter,
+    // Ordenamos también los links dentro de cada letra
+    links: groupedBrands[letter].sort(),
+  }));
 ---
 
 <Layout title="Todas las Temáticas | Tu Tienda">
   <main class="w-full bg-[#fcfcfc] min-h-screen pt-8 pb-16">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 flex flex-col md:flex-row items-start gap-8 lg:gap-12 relative">
+    <div class="max-w-350 mx-auto px-4 sm:px-6 md:px-8 flex flex-col md:flex-row items-start gap-8 lg:gap-12 relative">
       <!-- Columna Izquierda: Índice Alfabético (Filtro) -->
       <aside class="w-full md:w-56 lg:w-64 shrink-0 md:sticky md:top-24 md:h-[calc(100vh-8rem)] md:overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full pr-2">
         <div class="bg-white md:bg-transparent rounded-2xl shadow-sm md:shadow-none p-5 md:p-0 border border-gray-100 md:border-none">
@@ -133,7 +112,7 @@ const gridItems = [...tematicas, ...tematicas, ...tematicas];
             Mostrar todas
           </button>
 
-          <!-- Lista A-Z Funcional -->
+          <!-- Lista A-Z Funcional y Dinámica -->
           <div class="space-y-7 md:pr-4">
             {brandsIndex.map((group) => (
               <div class="group/letter">
@@ -145,7 +124,11 @@ const gridItems = [...tematicas, ...tematicas, ...tematicas];
                     <li>
                       <button
                         class="filter-btn text-left text-[13px] font-medium text-gray-500 hover:text-[#ff4b8b] hover:translate-x-1 transition-all duration-200 font-['Quicksand'] w-full"
-                        data-filter={link.toLowerCase().replace(/\s+/g, '-')}
+                        data-filter={link
+                          .toLowerCase()
+                          .normalize('NFD')
+                          .replace(/[\u0300-\u036f]/g, '')
+                          .replace(/\s+/g, '-')}
                       >
                         {link}
                       </button>
@@ -159,7 +142,7 @@ const gridItems = [...tematicas, ...tematicas, ...tematicas];
       </aside>
 
       <!-- Columna Derecha: Cuadrícula de Temáticas -->
-      <section class="flex-1 w-full bg-white rounded-3xl shadow-sm border border-gray-100 p-6 sm:p-8 lg:p-10 min-h-[500px]">
+      <section class="flex-1 w-full bg-white rounded-3xl shadow-sm border border-gray-100 p-6 sm:p-8 lg:p-10 min-h-125">
         <!-- Encabezado de la cuadrícula -->
         <div class="flex items-center justify-between mb-8 pb-4 border-b border-pink-50">
           <h2 id="grid-title" class="text-2xl font-extrabold text-[#ff4b8b] font-['Quicksand']">
@@ -173,7 +156,7 @@ const gridItems = [...tematicas, ...tematicas, ...tematicas];
           </span>
         </div>
 
-        <!-- Grid Responsivo (Cada item lleva data-slug para el filtro) -->
+        <!-- Grid Responsivo (Usa los colores dinámicos de tu base de datos) -->
         <div
           id="tematicas-grid"
           class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-4 gap-y-10 sm:gap-y-12"
@@ -183,16 +166,17 @@ const gridItems = [...tematicas, ...tematicas, ...tematicas];
               href={`/tematicas/${item.slug}`}
               data-slug={item.slug}
               class="theme-card flex flex-col items-center gap-3 group hover:-translate-y-1.5 transition-transform duration-300 animate-fade-in"
+              style={`--theme-color: ${item.color}; --theme-bg: ${item.color}20;`}
             >
-              <div class="w-[90px] h-[90px] sm:w-[110px] sm:h-[110px] rounded-full bg-gradient-to-br from-pink-50 to-white border border-pink-100 group-hover:border-pink-300 shadow-sm group-hover:shadow-[0_8px_20px_-6px_rgba(255,75,139,0.4)] transition-all duration-300 flex items-center justify-center p-1.5 sm:p-2 shrink-0">
+              <div class="w-22.5 h-22.5 sm:w-27.5 sm:h-27.5 rounded-full bg-(--theme-bg) border-2 border-transparent group-hover:border-(--theme-color) shadow-sm group-hover:shadow-[0_8px_20px_-6px_var(--theme-color)] transition-all duration-300 flex items-center justify-center p-1.5 sm:p-2 shrink-0">
                 <img
                   src={item.imagen}
                   alt={item.nombre}
-                  class="w-full h-full object-contain rounded-full group-hover:scale-110 transition-transform duration-500"
+                  class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-500"
                   loading="lazy"
                 />
               </div>
-              <span class="text-xs sm:text-[13px] font-bold text-gray-700 font-['Quicksand'] text-center leading-tight group-hover:text-[#ff4b8b] transition-colors px-1 w-full truncate">
+              <span class="text-xs sm:text-[13px] font-bold text-gray-700 font-['Quicksand'] text-center leading-tight group-hover:text-(--theme-color) transition-colors px-1 w-full truncate">
                 {item.nombre}
               </span>
             </a>
@@ -261,6 +245,7 @@ const gridItems = [...tematicas, ...tematicas, ...tematicas];
           b.classList.remove('text-[#ff4b8b]', 'font-extrabold', 'translate-x-1');
           b.classList.add('text-gray-500', 'font-medium');
         });
+
         // Si no es el botón "Mostrar todas", resaltar el seleccionado
         if (filterValue !== 'all') {
           btn.classList.remove('text-gray-500', 'font-medium');

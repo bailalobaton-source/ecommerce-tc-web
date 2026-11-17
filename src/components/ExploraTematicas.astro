@@ -1,55 +1,39 @@
 ---
-// src/components/astro/ExploraTematicas.astro
+import { API_URL_UPLOADS } from '../../api';
+import { getTematicasGlobales } from '../utils/apiTematicas';
 
-const tematicas = [
-  {
-    nombre: 'Navidad',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Barbie&backgroundColor=fce4ec',
-    slug: 'navidad',
-  },
-  {
-    nombre: 'Safari',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bella&backgroundColor=fff9c4',
-    slug: 'safari',
-  },
-  {
-    nombre: 'Princesas',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hadas&backgroundColor=e0f7fa',
-    slug: 'princesas',
-  },
-  {
-    nombre: 'Espacio',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pony&backgroundColor=f3e5f5',
-    slug: 'espacio',
-  },
-  {
-    nombre: 'Dinosaurios',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kpop&backgroundColor=ede7f6',
-    slug: 'dinosaurios',
-  },
-  {
-    nombre: 'Sirenas',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Toy&backgroundColor=e8f5e9',
-    slug: 'sirenas',
-  },
-  {
-    nombre: 'Unicornios',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Mario&backgroundColor=e3f2fd',
-    slug: 'unicornios',
-  },
-  {
-    nombre: 'Más',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Fresita&backgroundColor=ffebee',
-    slug: 'todas',
-  },
-];
+const tematicasBD = await getTematicasGlobales();
+
+const tematicas = tematicasBD
+  .filter((t) => t.mostrar_carrusel === true)
+  .map((t) => {
+    const colorSeguro = t.color_tematica || '#ff4b8b';
+
+    let imagenSegura = '';
+    if (t.img_tematica) {
+      imagenSegura = t.img_tematica.startsWith('http')
+        ? t.img_tematica
+        : `${API_URL_UPLOADS}/${t.img_tematica}`;
+    } else {
+      imagenSegura = `https://api.dicebear.com/7.x/avataaars/svg?seed=${t.nombre_tematica}&backgroundColor=transparent`;
+    }
+
+    return {
+      nombre: t.nombre_tematica,
+      imagen: imagenSegura,
+      color: colorSeguro,
+      slug: t.nombre_tematica
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, '-'),
+    };
+  });
 ---
 
-<section class="w-full max-w-7xl mx-auto px-4 py-4 sm:py-8">
-  <!-- Encabezado de la sección -->
+<section class="w-full max-w-7xl mx-auto py-4 sm:py-8">
   <div class="flex items-center justify-between mb-4 sm:mb-6">
     <h2 class="text-[#ff4b8b] text-lg sm:text-xl md:text-2xl font-extrabold font-['Quicksand'] tracking-tight flex items-center gap-2">
-      <!-- Iconito decorativo para hacer el título más bonito -->
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -65,7 +49,6 @@ const tematicas = [
       Explora por Temáticas
     </h2>
 
-    <!-- Botón Escritorio -->
     <a
       href="/tematicas"
       class="hidden sm:inline-flex items-center gap-1.5 bg-pink-50/50 text-[#ff4b8b] border border-pink-200 rounded-full px-5 py-1.5 text-xs font-bold font-['Quicksand'] hover:bg-[#ff4b8b] hover:text-white hover:border-[#ff4b8b] hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
@@ -74,34 +57,77 @@ const tematicas = [
     </a>
   </div>
 
-  <!-- Contenedor deslizable -->
-  <!-- pt-2 y pb-6 dan espacio para que la sombra de los círculos no se corte -->
-  <div class="flex items-start gap-3 sm:gap-5 md:gap-8 overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pt-2 pb-6 px-1">
-    {tematicas.map((item) => (
-      <a
-        href={`/tematicas/${item.slug}`}
-        class="flex flex-col items-center gap-1.5 sm:gap-2.5 shrink-0 snap-start group"
+  {tematicas.length === 0 ? (
+    <div class="w-full py-12 text-center flex flex-col items-center justify-center bg-pink-50/30 rounded-3xl border border-dashed border-pink-200">
+      <p class="text-gray-500 font-['Quicksand'] font-medium">
+        No hay temáticas destacadas actualmente.
+      </p>
+    </div>
+  ) : (
+    <div class="relative group">
+      <button
+        id="btn-prev-tematicas"
+        class="absolute -left-2 sm:-left-5 top-[38%] md:top-[40%] -translate-y-1/2 z-20 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-sm text-[#ff4b8b] shadow-[0_4px_15px_rgba(255,75,139,0.25)] border border-pink-100 hover:bg-[#ff4b8b] hover:text-white hover:scale-110 transition-all duration-300 opacity-0 pointer-events-none"
+        aria-label="Anterior"
       >
-        <!-- Círculo de la imagen (Tamaños reducidos y diseño premium) -->
-        <div class="w-[65px] h-[65px] sm:w-[90px] sm:h-[90px] md:w-[105px] md:h-[105px] rounded-full overflow-hidden bg-gradient-to-br from-pink-50 to-white border-2 border-white shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)] group-hover:shadow-[0_8px_20px_-6px_rgba(255,75,139,0.5)] group-hover:border-pink-200 group-hover:-translate-y-1.5 transition-all duration-300 flex items-center justify-center relative shrink-0">
-          <img
-            src={item.imagen}
-            alt={`Temática ${item.nombre}`}
-            class="w-[90%] h-[90%] object-cover group-hover:scale-110 transition-transform duration-500 rounded-full"
-            loading="lazy"
-          />
-        </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="3"
+          stroke="currentColor"
+          class="w-4 h-4 sm:w-5 sm:h-5 -ml-0.5"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+      </button>
 
-        <!-- Texto inferior (Más pequeño y delicado) -->
-        <span class="text-[11px] sm:text-xs md:text-sm font-bold text-gray-600 font-['Quicksand'] group-hover:text-[#ff4b8b] transition-colors text-center w-full max-w-[70px] sm:max-w-[100px] leading-tight">
-          {item.nombre}
-        </span>
-      </a>
-    ))}
-  </div>
+      <div
+        id="carrusel-tematicas"
+        class="flex items-start gap-4 sm:gap-5 md:gap-8 overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none pt-2 pb-6 px-2 sm:px-1 scroll-smooth"
+      >
+        {tematicas.map((item) => (
+          <a
+            href={`/tematicas/${item.slug}`}
+            class="flex flex-col items-center gap-1.5 sm:gap-2.5 shrink-0 snap-start group/item"
+            style={`--theme-color: ${item.color}; --theme-bg: ${item.color}25;`}
+          >
+            <div class="w-17.5 h-17.5 sm:w-25 sm:h-25 md:w-28 md:h-28 rounded-full overflow-hidden bg-(--theme-bg) border-[3px] border-transparent shadow-[0_4px_12px_-4px_rgba(0,0,0,0.08)] group-hover/item:shadow-[0_8px_20px_-6px_var(--theme-color)] group-hover/item:border-(--theme-color) group-hover/item:-translate-y-1.5 transition-all duration-300 flex items-center justify-center relative shrink-0 p-1">
+              <img
+                src={item.imagen}
+                alt={item.nombre}
+                class="w-full h-full object-cover group-hover/item:scale-110 transition-transform duration-500 rounded-full"
+                loading="lazy"
+              />
+            </div>
 
-  <!-- Botón Móvil -->
-  <div class="mt-2 flex justify-center sm:hidden px-4">
+            <span class="text-[11px] sm:text-xs md:text-sm font-bold text-gray-600 font-['Quicksand'] group-hover/item:text-(--theme-color) transition-colors text-center w-full max-w-17.5 sm:max-w-25 leading-tight line-clamp-2 px-1">
+              {item.nombre}
+            </span>
+          </a>
+        ))}
+      </div>
+
+      <button
+        id="btn-next-tematicas"
+        class="absolute -right-2 sm:-right-5 top-[38%] md:top-[40%] -translate-y-1/2 z-20 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-sm text-[#ff4b8b] shadow-[0_4px_15px_rgba(255,75,139,0.25)] border border-pink-100 hover:bg-[#ff4b8b] hover:text-white hover:scale-110 transition-all duration-300 opacity-100"
+        aria-label="Siguiente"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="3"
+          stroke="currentColor"
+          class="w-4 h-4 sm:w-5 sm:h-5 ml-0.5"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
+    </div>
+  )}
+
+  <div class="mt-1 flex justify-center sm:hidden px-2">
     <a
       href="/tematicas"
       class="inline-flex items-center justify-center gap-2 bg-pink-50/80 text-[#ff4b8b] border border-pink-200 rounded-full px-6 py-2.5 text-xs font-bold font-['Quicksand'] hover:bg-[#ff4b8b] hover:text-white active:scale-95 transition-all duration-300 w-full shadow-sm"
@@ -110,3 +136,46 @@ const tematicas = [
     </a>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const carrusel = document.getElementById('carrusel-tematicas');
+    const btnPrev = document.getElementById('btn-prev-tematicas');
+    const btnNext = document.getElementById('btn-next-tematicas');
+
+    if (!carrusel || !btnPrev || !btnNext) return;
+
+    const getScrollAmount = () => carrusel.clientWidth * 0.6;
+
+    btnNext.addEventListener('click', () => {
+      carrusel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+    });
+
+    btnPrev.addEventListener('click', () => {
+      carrusel.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+    });
+
+    const updateBotones = () => {
+      if (carrusel.scrollLeft <= 10) {
+        btnPrev.classList.remove('opacity-100', 'pointer-events-auto');
+        btnPrev.classList.add('opacity-0', 'pointer-events-none');
+      } else {
+        btnPrev.classList.add('opacity-100', 'pointer-events-auto');
+        btnPrev.classList.remove('opacity-0', 'pointer-events-none');
+      }
+
+      if (carrusel.scrollLeft + carrusel.clientWidth >= carrusel.scrollWidth - 10) {
+        btnNext.classList.remove('opacity-100', 'pointer-events-auto');
+        btnNext.classList.add('opacity-0', 'pointer-events-none');
+      } else {
+        btnNext.classList.add('opacity-100', 'pointer-events-auto');
+        btnNext.classList.remove('opacity-0', 'pointer-events-none');
+      }
+    };
+
+    carrusel.addEventListener('scroll', updateBotones);
+    window.addEventListener('resize', updateBotones);
+
+    updateBotones();
+  });
+</script>

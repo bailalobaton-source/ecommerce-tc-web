@@ -43,8 +43,8 @@ const {
   {/* Flexbox en el body asegura que el footer siempre se quede abajo si la página tiene poco contenido */}
   <body class="min-h-screen flex flex-col font-['Quicksand'] bg-white text-gray-800">
     <TopBar />
-    <Header client:load />
-    <MainNav client:load />
+    <Header />
+    <MainNav />
     <!-- Contenedor principal donde se inyectará el contenido de las páginas (como index.astro) -->
     <main class="grow w-full">
       <slot />

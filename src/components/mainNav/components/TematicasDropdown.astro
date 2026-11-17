@@ -1,71 +1,27 @@
 ---
+import { API_URL_UPLOADS } from '../../../../api';
+import { getTematicasGlobales } from '../../../utils/apiTematicas';
+
 // src/components/astro/TematicasDropdown.astro
 
-const tematicas = [
-  {
-    nombre: 'Barbie',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Barbie&backgroundColor=fce4ec',
-    slug: 'barbie',
-  },
-  {
-    nombre: 'Bella Y Bestia',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bella&backgroundColor=fff9c4',
-    slug: 'bella-y-bestia',
-  },
-  {
-    nombre: 'Hadas',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hadas&backgroundColor=e0f7fa',
-    slug: 'hadas',
-  },
-  {
-    nombre: 'My Little Pony',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pony&backgroundColor=f3e5f5',
-    slug: 'my-little-pony',
-  },
-  {
-    nombre: 'Cazadoras Kpop',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kpop&backgroundColor=ede7f6',
-    slug: 'cazadoras-kpop',
-  },
-  {
-    nombre: 'Toy Story',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Toy&backgroundColor=e8f5e9',
-    slug: 'toy-story',
-  },
-  {
-    nombre: 'Mario Bros',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Mario&backgroundColor=e3f2fd',
-    slug: 'mario-bros',
-  },
-  {
-    nombre: 'Fresita',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Fresita&backgroundColor=ffebee',
-    slug: 'fresita',
-  },
-  {
-    nombre: 'Hadas',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hadas2&backgroundColor=e0f7fa',
-    slug: 'hadas-2',
-  },
-  {
-    nombre: 'My Little Pony',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pony2&backgroundColor=f3e5f5',
-    slug: 'my-little-pony-2',
-  },
-  {
-    nombre: 'Cazadoras Kpop',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kpop2&backgroundColor=ede7f6',
-    slug: 'cazadoras-kpop-2',
-  },
-  {
-    nombre: 'Toy Story',
-    imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Toy2&backgroundColor=e8f5e9',
-    slug: 'toy-story-2',
-  },
-];
+const tematicasBD = await getTematicasGlobales();
+
+// 1. Filtramos estrictamente las que tienen mostrar_carrusel en true
+const tematicas = tematicasBD
+  .filter((t) => t.mostrar_carrusel === true)
+  .slice(0, 12) // Limitamos a 12 para no saturar el menú
+  .map((t) => ({
+    nombre: t.nombre_tematica,
+    imagen: t.img_tematica,
+    color: t.color_tematica,
+    slug: t.nombre_tematica
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '-'),
+  }));
 ---
 
-<!-- 1. ELIMINAMOS la clase 'relative' de este div padre -->
 <div id="tematicas-dropdown">
   <!-- Botón Disparador -->
   <button
@@ -88,39 +44,43 @@ const tematicas = [
     </svg>
   </button>
 
-  <!-- 2. Contenedor de Posicionamiento (Ocupa el 100% de la pantalla para poder centrar) -->
-  <!-- 'pointer-events-none' evita que este div invisible bloquee los clics en otras partes de la página -->
+  <!-- Contenedor de Posicionamiento -->
   <div
     id="tematicas-menu"
     class="absolute left-0 top-full w-full flex justify-center pt-2 sm:pt-4 px-3 opacity-0 invisible translate-y-2 transition-all duration-300 z-60 pointer-events-none"
   >
-    <!-- 3. Tarjeta Blanca del Menú (Centrada automáticamente por el padre) -->
-    <!-- 'pointer-events-auto' reactiva los clics solo dentro del recuadro blanco -->
-    <div class="pointer-events-auto bg-white rounded-3xl sm:rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] border border-pink-50 p-5 sm:p-8 flex flex-col items-center w-full max-w-[360px] sm:max-w-[600px] lg:max-w-[750px]">
-      <!-- Cuadrícula de Íconos: 3 columnas en móvil (idéntico a tu foto), 4 a 6 en pantallas grandes -->
-      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-x-2 sm:gap-x-4 gap-y-5 sm:gap-y-8 w-full mb-6 sm:mb-8">
-        {tematicas.map((item) => (
-          <a
-            href={`/tematicas/${item.slug}`}
-            class="flex flex-col items-center gap-1.5 sm:gap-3 group/item hover:-translate-y-1 transition-transform duration-300"
-          >
-            <div class="w-14 h-14 sm:w-20 sm:h-20 md:w-22 md:h-22 rounded-full overflow-hidden border-[3px] border-transparent group-hover/item:border-pink-300 group-hover/item:shadow-md group-hover/item:shadow-pink-200/50 transition-all duration-300 bg-pink-50 flex-shrink-0">
-              <img
-                src={item.imagen}
-                alt={item.nombre}
-                class="w-full h-full object-cover scale-90 group-hover/item:scale-100 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <!-- Texto del ícono -->
-            <span class="text-[11px] sm:text-[13px] font-['Quicksand'] font-bold text-gray-700 text-center leading-tight group-hover/item:text-[#ff4b8b] transition-colors">
-              {item.nombre}
-            </span>
-          </a>
-        ))}
-      </div>
+    <!-- Tarjeta Blanca del Menú -->
+    <div class="pointer-events-auto bg-white rounded-3xl sm:rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] border border-pink-50 p-5 sm:p-8 flex flex-col items-center w-full max-w-90 sm:max-w-150 lg:max-w-187.5">
+      {tematicas.length === 0 ? (
+        <div class="py-8 text-center text-gray-500 font-['Quicksand'] font-medium text-sm">
+          No hay temáticas destacadas por el momento.
+        </div>
+      ) : (
+        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-x-2 sm:gap-x-4 gap-y-5 sm:gap-y-8 w-full mb-6 sm:mb-8">
+          {tematicas.map((item) => (
+            <a
+              href={`/tematicas/${item.slug}`}
+              class="flex flex-col items-center gap-1.5 sm:gap-3 group/item hover:-translate-y-1 transition-transform duration-300"
+            >
+              <div
+                class="w-14 h-14 sm:w-20 sm:h-20 md:w-22 md:h-22 rounded-full overflow-hidden border-2 border-transparent group-hover/item:border-pink-300 group-hover/item:shadow-md group-hover/item:shadow-pink-200/50 transition-all duration-300 shrink-0"
+                style={`background-color: ${item.color};`}
+              >
+                <img
+                  src={`${API_URL_UPLOADS}/${item.imagen}`}
+                  alt={item.nombre}
+                  class="w-full h-full rounded-full object-cover scale-95 group-hover/item:scale-100 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
+              <span class="text-[11px] sm:text-[13px] font-['Quicksand'] font-bold text-gray-700 text-center leading-tight group-hover/item:text-[#ff4b8b] transition-colors line-clamp-2">
+                {item.nombre}
+              </span>
+            </a>
+          ))}
+        </div>
+      )}
 
-      <!-- Botón Rosa Claro inferior (Mejorado para igualar tu captura) -->
       <a
         href="/tematicas"
         class="inline-flex items-center gap-2 bg-[#ffecf2] text-[#ff4b8b] font-bold font-['Quicksand'] text-xs sm:text-base px-8 py-3 rounded-full hover:bg-[#ff4b8b] hover:text-white transition-all w-[90%] sm:w-auto justify-center"

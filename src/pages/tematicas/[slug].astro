@@ -5,74 +5,24 @@ import Paginacion from '../../components/tematicas/Paginacion.astro';
 import SidebarFiltros from '../../components/tematicas/SidebarFiltros.astro';
 import TopBarResultados from '../../components/tematicas/TopBarResultados.astro';
 import Layout from '../../layouts/Layout.astro';
+import { getTematicasGlobales } from '../../utils/apiTematicas'; // Importamos la caché
 
+// 1. GENERAMOS RUTAS ESTÁTICAS DESDE LA BASE DE DATOS
 export async function getStaticPaths() {
-  const tematicasValidas = [
-    {
-      nombre: 'Barbie',
-      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Barbie&backgroundColor=fce4ec',
-      slug: 'barbie',
-    },
-    {
-      nombre: 'Bella Y Bestia',
-      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bella&backgroundColor=fff9c4',
-      slug: 'bella-y-bestia',
-    },
-    {
-      nombre: 'Hadas',
-      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hadas&backgroundColor=e0f7fa',
-      slug: 'hadas',
-    },
-    {
-      nombre: 'My Little Pony',
-      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pony&backgroundColor=f3e5f5',
-      slug: 'my-little-pony',
-    },
-    {
-      nombre: 'Cazadoras Kpop',
-      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kpop&backgroundColor=ede7f6',
-      slug: 'cazadoras-kpop',
-    },
-    {
-      nombre: 'Toy Story',
-      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Toy&backgroundColor=e8f5e9',
-      slug: 'toy-story',
-    },
-    {
-      nombre: 'Mario Bros',
-      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Mario&backgroundColor=e3f2fd',
-      slug: 'mario-bros',
-    },
-    {
-      nombre: 'Fresita',
-      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Fresita&backgroundColor=ffebee',
-      slug: 'fresita',
-    },
-    {
-      nombre: 'Hadas',
-      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hadas2&backgroundColor=e0f7fa',
-      slug: 'hadas-2',
-    },
-    {
-      nombre: 'My Little Pony',
-      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pony2&backgroundColor=f3e5f5',
-      slug: 'my-little-pony-2',
-    },
-    {
-      nombre: 'Cazadoras Kpop',
-      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kpop2&backgroundColor=ede7f6',
-      slug: 'cazadoras-kpop-2',
-    },
-    {
-      nombre: 'Toy Story',
-      imagen: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Toy2&backgroundColor=e8f5e9',
-      slug: 'toy-story-2',
-    },
-  ];
-  return tematicasValidas.map((tematica) => ({
-    params: { slug: tematica.slug },
-    props: { tematica },
-  }));
+  const tematicasBD = await getTematicasGlobales();
+
+  return tematicasBD.map((tematica) => {
+    const slug = tematica.nombre_tematica
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '-');
+
+    return {
+      params: { slug },
+      props: { tematica }, // Pasamos el objeto Tematica completo como prop
+    };
+  });
 }
 
 const { tematica } = Astro.props;
@@ -188,10 +138,15 @@ const productosNavidad = [
 ];
 ---
 
-<Layout title={`Temática: ${tematica.nombre} | Tu Tienda`}>
+<!-- Actualizamos el title para usar tematica.nombre_tematica -->
+<Layout title={`Temática: ${tematica.nombre_tematica} | Tu Tienda`}>
   <main class="w-full bg-[#fcfcfc] min-h-screen pt-4 pb-16">
     <div class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8">
-      <TopBarResultados tematicaNombre={tematica.nombre} totalProductos={productosNavidad.length} />
+      <!-- Pasamos el nombre real de la base de datos al TopBar -->
+      <TopBarResultados
+        tematicaNombre={tematica.nombre_tematica}
+        totalProductos={productosNavidad.length}
+      />
 
       <div class="flex flex-col lg:flex-row items-start gap-6 lg:gap-8">
         <SidebarFiltros categorias={categorias} formatos={formatos} />
@@ -285,15 +240,14 @@ const productosNavidad = [
           case 'price-desc':
             return priceB - priceA;
           case 'popular':
-            return idA - idB; // Simulación: ID más bajo = más popular
+            return idA - idB;
           case 'recent':
-            return idB - idA; // Simulación: ID más alto = más reciente
+            return idB - idA;
           default:
             return 0;
         }
       });
 
-      // Vaciar y reinsertar los elementos en el nuevo orden usando DocumentFragment para mejor rendimiento
       if (gridContainer) {
         gridContainer.innerHTML = '';
         const fragment = document.createDocumentFragment();
@@ -393,7 +347,6 @@ const productosNavidad = [
 </script>
 
 <style is:global>
-  /* --- ESTILOS PARA LA VISTA DE LISTA --- */
   #grid-productos.list-view {
     display: flex;
     flex-direction: column;
